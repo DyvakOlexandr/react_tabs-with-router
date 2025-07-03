@@ -1,19 +1,22 @@
-import { NavLink } from 'react-router-dom';
 import { Tab } from '../../types/Tab';
 
 interface PropsTabs {
   tabs: Tab[];
   activeTabId: string | undefined;
-  onTabSelected: (
-    tabId: string,
-    onClick: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
-  ) => void;
+  onTabSelected: (tabId: string) => void;
 }
 export const Tabs = ({ tabs, activeTabId }: PropsTabs) => {
   const selectedTabId =
     activeTabId && tabs.some(tab => tab.id === activeTabId)
       ? activeTabId
       : null;
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  function onTabSelected(_id: string) {
+    throw new Error('Function not implemented.');
+  }
+
+  // Removed unused onTabSelected function
 
   return (
     <div data-cy="TabsComponent">
@@ -25,14 +28,20 @@ export const Tabs = ({ tabs, activeTabId }: PropsTabs) => {
               className={tab.id === selectedTabId ? 'is-active' : ''}
               data-cy="Tab"
             >
-              <NavLink to={`../${tab.id}`} data-cy="TabLink">
+              <a
+                href={`#${tab.id}`}
+                onClick={e => {
+                  e.preventDefault();
+                  // Use the onTabSelected prop
+                  onTabSelected(tab.id);
+                }}
+              >
                 {tab.title}
-              </NavLink>
+              </a>
             </li>
           ))}
         </ul>
       </div>
-
       <div className="block" data-cy="TabContent">
         {selectedTabId
           ? tabs.find((tab: Tab) => tab.id === selectedTabId)?.content
