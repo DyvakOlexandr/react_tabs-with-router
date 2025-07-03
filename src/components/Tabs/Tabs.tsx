@@ -4,6 +4,10 @@ import { Tab } from '../../types/Tab';
 interface PropsTabs {
   tabs: Tab[];
   activeTabId: string | undefined;
+  onTabSelected: (
+    tabId: string,
+    onClick: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+  ) => void;
 }
 export const Tabs = ({ tabs, activeTabId }: PropsTabs) => {
   const selectedTabId =
